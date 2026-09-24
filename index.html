@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bussola del Ritorno</title>
+<style>
+  :root {
+    --bg: #0e1a12;
+    --bg2: #142418;
+    --card: #1b2e20;
+    --accent: #6fcf7a;
+    --accent2: #ffb84d;
+    --text: #eef5ee;
+    --text-dim: #9cb3a1;
+    --danger: #ff6b6b;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f2f7f2;
+      --bg2: #e6efe6;
+      --card: #ffffff;
+      --accent: #2f9e46;
+      --accent2: #d9822b;
+      --text: #16241a;
+      --text-dim: #567060;
+    }
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    height: 100%;
+    background: linear-gradient(180deg, var(--bg), var(--bg2));
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 24px;
+    min-height: 100%;
+  }
+  h1 {
+    font-size: 1.25rem;
+    margin: 4px 0 2px;
+    text-align: center;
+  }
+  .sub {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    margin-bottom: 14px;
+  }
+  .compass-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .compass {
+    width: min(72vw, 300px);
+    height: min(72vw, 300px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05), transparent 60%), var(--bg2);
+    border: 3px solid var(--accent);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .compass .tick {
+    position: absolute;
+    inset: 0;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .compass .tick span { position: absolute; }
+  .n { top: 6px; left: 50%; transform: translateX(-50%); color: var(--accent2); }
+  .e { right: 8px; top: 50%; transform: translateY(-50%); }
+  .s { bottom: 6px; left: 50%; transform: translateX(-50%); }
+  .w { left: 8px; top: 50%; transform: translateY(-50%); }
+  .arrow {
+    width: 0; height: 0;
+    transition: transform 0.15s ease-out;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+  }
+  .arrow svg { width: 90px; height: 90px; }
+  .dot { width: 12px; height: 12px; background: var(--text-dim); border-radius: 50%; position: absolute; }
+  .distance {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .distance small { font-size: 1rem; color: var(--text-dim); font-weight: 500; }
+  .status {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-align: center;
+    min-height: 1.2em;
+  }
+  .status.warn { color: var(--accent2); }
+  .status.err { color: var(--danger); }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 4px;
+  }
+  button {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .primary { background: var(--accent); color: #0e1a12; }
+  .secondary { background: transparent; color: var(--danger); border: 1.5px solid var(--danger); }
+  .primary:disabled { opacity: 0.5; }
+  .info { font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: 14px; max-width: 420px; line-height: 1.4; }
+</style>
+</head>
+<body>
+  <h1>🧭 Bussola del Ritorno</h1>
+  <div class="sub">Segna il punto di partenza, poi cammina: la freccia indica sempre la via del ritorno.</div>
+
+  <div class="card compass-wrap">
+    <div class="compass" id="compass">
+      <div class="tick">
+        <span class="n">N</span><span class="e">E</span><span class="s">S</span><span class="w">O</span>
+      </div>
+      <div class="arrow" id="arrow">
+        <svg viewBox="0 0 100 100">
+          <polygon points="50,8 68,60 50,48 32,60" fill="var(--accent2)"/>
+          <circle cx="50" cy="65" r="6" fill="var(--text-dim)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="distance" id="distance">— <small>m</small></div>
+    <div class="status" id="status">Tocca "Imposta partenza" quando sei pronto.</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="primary" id="setStart">📍 Imposta partenza</button>
+    <button class="secondary" id="reset">Reset</button>
+  </div>
+
+  <div class="info" id="info">
+    Il GPS funziona anche senza rete/internet (usa i satelliti), ma sotto la vegetazione fitta può essere meno preciso. Tieni lo schermo acceso o riapri questa pagina: il punto di partenza resta salvato sul telefono.
+  </div>
+
+<script>
+(function(){
+  const compassEl = document.getElementById('compass');
+  const arrowEl = document.getElementById('arrow');
+  const distEl = document.getElementById('distance');
+  const statusEl = document.getElementById('status');
+  const setBtn = document.getElementById('setStart');
+  const resetBtn = document.getElementById('reset');
+
+  let start = null;
+  let current = null;
+  let deviceHeading = null;
+  let headingAvailable = false;
+  let watchId = null;
+
+  function loadStart() {
+    try {
+      const raw = localStorage.getItem('bussola_start');
+      if (raw) {
+        start = JSON.parse(raw);
+        statusEl.textContent = 'Punto di partenza caricato. In cammino!';
+      }
+    } catch(e) {}
+  }
+  function saveStart() {
+    try { localStorage.setItem('bussola_start', JSON.stringify(start)); } catch(e) {}
+  }
+  function clearStart() {
+    try { localStorage.removeItem('bussola_start'); } catch(e) {}
+  }
+
+  function toRad(d){ return d * Math.PI/180; }
+  function toDeg(r){ return r * 180/Math.PI; }
+
+  function distanceMeters(a,b){
+    const R = 6371000;
+    const dLat = toRad(b.lat-a.lat);
+    const dLon = toRad(b.lon-a.lon);
+    const lat1 = toRad(a.lat), lat2 = toRad(b.lat);
+    const h = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1-h));
+  }
+  function bearingTo(a,b){
+    const lat1 = toRad(a.lat), lat2 = toRad(b.lat);
+    const dLon = toRad(b.lon-a.lon);
+    const y = Math.sin(dLon)*Math.cos(lat2);
+    const x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+    return (toDeg(Math.atan2(y,x)) + 360) % 360;
+  }
+
+  function formatDist(m){
+    if (m < 1000) return [Math.round(m), 'm'];
+    return [(m/1000).toFixed(2), 'km'];
+  }
+
+  function update(){
+    if (!start || !current) return;
+    const d = distanceMeters(current, start);
+    const b = bearingTo(current, start);
+    const [val, unit] = formatDist(d);
+    distEl.innerHTML = val + ' <small>' + unit + '</small>';
+
+    if (d < 15) {
+      statusEl.textContent = 'Sei arrivato al punto di partenza! 🎉';
+      statusEl.className = 'status';
+    } else if (headingAvailable && deviceHeading !== null) {
+      const rel = (b - deviceHeading + 360) % 360;
+      arrowEl.style.transform = 'rotate(' + rel + 'deg)';
+      statusEl.textContent = 'Segui la freccia arancione';
+      statusEl.className = 'status';
+    } else {
+      statusEl.textContent = 'Direzione da seguire: ' + Math.round(b) + '° (bussola non disponibile, ruota lentamente il telefono in piano)';
+      statusEl.className = 'status warn';
+    }
+  }
+
+  function onPosition(pos){
+    current = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    if (start) update();
+  }
+  function onPosError(err){
+    statusEl.textContent = 'Errore GPS: ' + err.message;
+    statusEl.className = 'status err';
+  }
+
+  function startWatch(){
+    if (!navigator.geolocation) {
+      statusEl.textContent = 'GPS non disponibile su questo dispositivo/browser.';
+      statusEl.className = 'status err';
+      return;
+    }
+    if (watchId !== null) return;
+    watchId = navigator.geolocation.watchPosition(onPosition, onPosError, {
+      enableHighAccuracy: true, maximumAge: 2000, timeout: 15000
+    });
+  }
+
+  function onOrientation(e){
+    let heading = null;
+    if (typeof e.webkitCompassHeading === 'number') {
+      heading = e.webkitCompassHeading; // iOS, already 0=N clockwise
+    } else if (e.absolute && e.alpha !== null) {
+      heading = (360 - e.alpha) % 360;
+    } else if (e.alpha !== null) {
+      heading = (360 - e.alpha) % 360;
+    }
+    if (heading !== null) {
+      deviceHeading = heading;
+      headingAvailable = true;
+      if (start && current) update();
+    }
+  }
+
+  function requestOrientationPermission(){
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission().then(state => {
+        if (state === 'granted') {
+          window.addEventListener('deviceorientationabsolute', onOrientation, true);
+          window.addEventListener('deviceorientation', onOrientation, true);
+        }
+      }).catch(()=>{});
+    } else if ('DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientationabsolute', onOrientation, true);
+      window.addEventListener('deviceorientation', onOrientation, true);
+    }
+  }
+
+  setBtn.addEventListener('click', function(){
+    setBtn.disabled = true;
+    statusEl.textContent = 'Acquisizione posizione…';
+    statusEl.className = 'status';
+    if (!navigator.geolocation) {
+      statusEl.textContent = 'GPS non disponibile su questo dispositivo/browser.';
+      statusEl.className = 'status err';
+      setBtn.disabled = false;
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      start = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+      current = start;
+      saveStart();
+      requestOrientationPermission();
+      startWatch();
+      statusEl.textContent = 'Partenza salvata! Ora puoi camminare liberamente.';
+      setBtn.disabled = false;
+    }, function(err){
+      statusEl.textContent = 'Errore GPS: ' + err.message;
+      statusEl.className = 'status err';
+      setBtn.disabled = false;
+    }, { enableHighAccuracy: true, timeout: 15000 });
+  });
+
+  resetBtn.addEventListener('click', function(){
+    start = null;
+    clearStart();
+    distEl.innerHTML = '— <small>m</small>';
+    arrowEl.style.transform = 'rotate(0deg)';
+    statusEl.textContent = 'Punto di partenza cancellato.';
+    statusEl.className = 'status';
+  });
+
+  loadStart();
+  if (start) {
+    requestOrientationPermission();
+    startWatch();
+  }
+})();
+</script>
+</body>
+</html>
