@@ -7,96 +7,86 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="data:image/png;base64,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">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
-<meta name="theme-color" content="#0e1a12">
+<meta name="theme-color" content="#0a140d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
   :root {
-    --bg: #0e1a12;
-    --bg2: #142418;
-    --card: #1b2e20;
-    --accent: #6fcf7a;
+    --bg: #0a140d;
+    --bg2: #101f15;
+    --card: #16281c;
+    --card2: #1c3524;
+    --accent: #58d16a;
+    --accent-glow: #58d16a55;
     --accent2: #ffb84d;
-    --text: #eef5ee;
-    --text-dim: #9cb3a1;
+    --accent2-glow: #ffb84d55;
+    --text: #f2f8f2;
+    --text-dim: #8fab97;
     --danger: #ff6b6b;
-    --trail: #3f8f52;
+    --trail: #4fd66a;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --bg: #f2f7f2;
-      --bg2: #e6efe6;
-      --card: #ffffff;
-      --accent: #2f9e46;
-      --accent2: #d9822b;
-      --text: #16241a;
-      --text-dim: #567060;
-      --trail: #8fd39f;
+      --bg: #f2f7f2; --bg2: #e6efe6; --card: #ffffff; --card2: #eef5ee;
+      --accent: #2f9e46; --accent-glow: #2f9e4633; --accent2: #d9822b; --accent2-glow: #d9822b33;
+      --text: #16241a; --text-dim: #567060; --trail: #3f8f52;
     }
   }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
   * { box-sizing: border-box; }
   body {
-    margin: 0;
-    height: 100%;
-    background: linear-gradient(180deg, var(--bg), var(--bg2));
+    margin: 0; height: 100%;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(88,209,106,0.08), transparent 55%),
+      linear-gradient(180deg, var(--bg), var(--bg2));
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 16px 24px;
-    min-height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 18px 16px 24px; min-height: 100%;
   }
-  h1 { font-size: 1.25rem; margin: 4px 0 2px; text-align: center; }
-  .sub { color: var(--text-dim); font-size: 0.85rem; text-align: center; margin-bottom: 18px; }
+  h1 { font-size: 1.2rem; margin: 4px 0 2px; text-align: center; letter-spacing: 0.2px; }
+  .sub { color: var(--text-dim); font-size: 0.82rem; text-align: center; margin-bottom: 16px; max-width: 340px; }
   .card {
-    background: var(--card);
-    border-radius: 20px;
-    padding: 16px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    background: linear-gradient(160deg, var(--card), var(--card2));
+    border-radius: 22px; padding: 14px;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
     margin-bottom: 14px;
   }
+  .stat-row {
+    display: flex; justify-content: space-between; padding: 2px 6px 10px;
+    font-size: 0.72rem; color: var(--text-dim);
+  }
+  .stat-row b { color: var(--text); font-weight: 600; }
   .map-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .map-box {
-    width: min(78vw, 320px);
-    height: min(78vw, 320px);
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    border: 2px solid rgba(111,207,122,0.35);
-    background: var(--bg2);
+    width: min(80vw, 330px); height: min(80vw, 330px);
+    border-radius: 50%; overflow: hidden; position: relative;
+    box-shadow: 0 0 0 2px rgba(88,209,106,0.25), 0 0 40px rgba(88,209,106,0.08), inset 0 0 30px rgba(0,0,0,0.4);
+    background: #0a140d;
   }
   canvas { width: 100%; height: 100%; display: block; }
-  .range-badge {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: rgba(0,0,0,0.35);
-    color: var(--text-dim);
-    font-size: 0.7rem;
-    padding: 3px 8px;
-    border-radius: 999px;
-  }
-  .distance { font-size: 2.1rem; font-weight: 700; margin-top: 2px; }
+  .distance { font-size: 2.3rem; font-weight: 700; margin-top: 2px; letter-spacing: -0.5px; }
   .distance small { font-size: 1rem; color: var(--text-dim); font-weight: 500; }
-  .status { font-size: 0.85rem; color: var(--text-dim); text-align: center; min-height: 1.2em; }
+  .status { font-size: 0.85rem; color: var(--text-dim); text-align: center; min-height: 1.3em; padding: 0 8px; }
+  .status.ok { color: var(--accent); font-weight: 600; }
   .status.warn { color: var(--accent2); }
   .status.err { color: var(--danger); }
   .btn-row { display: flex; gap: 10px; width: 100%; max-width: 420px; margin-top: 4px; }
   button {
-    flex: 1; border: none; border-radius: 14px; padding: 14px 10px;
-    font-size: 1rem; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    flex: 1; border: none; border-radius: 16px; padding: 15px 10px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: transform 0.1s ease;
   }
-  .primary { background: var(--accent); color: #0e1a12; }
-  .secondary { background: transparent; color: var(--danger); border: 1.5px solid var(--danger); }
-  .primary:disabled { opacity: 0.5; }
-  .info { font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: 14px; max-width: 420px; line-height: 1.4; }
+  button:active { transform: scale(0.97); }
+  .primary { background: linear-gradient(160deg, #6fe07f, var(--accent)); color: #0a140d; box-shadow: 0 4px 14px rgba(88,209,106,0.3); }
+  .secondary { background: transparent; color: var(--danger); border: 1.5px solid rgba(255,107,107,0.5); }
+  .primary:disabled { opacity: 0.5; box-shadow: none; }
+  .info { font-size: 0.72rem; color: var(--text-dim); text-align: center; margin-top: 14px; max-width: 400px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -104,10 +94,12 @@
   <div class="sub">Segna il punto di partenza, poi cammina: la mappa ti mostra sempre la via del ritorno.</div>
 
   <div class="card map-wrap">
-    <div class="map-box">
-      <canvas id="map" width="640" height="640"></canvas>
-      <div class="range-badge" id="rangeBadge">— m di raggio</div>
+    <div class="stat-row">
+      <span>Precisione: <b id="acc">—</b></span>
+      <span>Velocità: <b id="spd">—</b></span>
+      <span>Tempo: <b id="elapsed">—</b></span>
     </div>
+    <div class="map-box"><canvas id="map" width="640" height="640"></canvas></div>
     <div class="distance" id="distance">— <small>m</small></div>
     <div class="status" id="status">Tocca "Imposta partenza" quando sei pronto.</div>
   </div>
@@ -117,9 +109,7 @@
     <button class="secondary" id="reset">Reset</button>
   </div>
 
-  <div class="info">
-    Il GPS funziona anche senza rete/internet (usa i satelliti), ma sotto la vegetazione fitta può essere meno preciso. Il punto di partenza resta salvato sul telefono.
-  </div>
+  <div class="info">Il GPS funziona anche senza rete/internet (usa i satelliti), ma sotto la vegetazione fitta può essere meno preciso. Il punto di partenza resta salvato sul telefono.</div>
 
 <script>
 (function(){
@@ -127,327 +117,327 @@
   const ctx = canvas.getContext('2d');
   const distEl = document.getElementById('distance');
   const statusEl = document.getElementById('status');
-  const rangeBadge = document.getElementById('rangeBadge');
+  const accEl = document.getElementById('acc');
+  const spdEl = document.getElementById('spd');
+  const elapsedEl = document.getElementById('elapsed');
   const setBtn = document.getElementById('setStart');
   const resetBtn = document.getElementById('reset');
 
   const W = canvas.width, H = canvas.height, CX = W/2, CY = H/2;
-
-  let start = null;       // {lat, lon}
-  let current = null;     // {lat, lon}
-  let trail = [];         // array of {lat, lon}
-  let deviceHeading = null;
-  let watchId = null;
-
   const css = getComputedStyle(document.documentElement);
-  const cAccent = css.getPropertyValue('--accent').trim() || '#6fcf7a';
-  const cAccent2 = css.getPropertyValue('--accent2').trim() || '#ffb84d';
-  const cTrail = css.getPropertyValue('--trail').trim() || '#3f8f52';
-  const cTextDim = css.getPropertyValue('--text-dim').trim() || '#9cb3a1';
-  const cText = css.getPropertyValue('--text').trim() || '#eef5ee';
-  const cBg2 = css.getPropertyValue('--bg2').trim() || '#142418';
+  const cAccent = css.getPropertyValue('--accent').trim();
+  const cAccent2 = css.getPropertyValue('--accent2').trim();
+  const cTrail = css.getPropertyValue('--trail').trim();
+  const cTextDim = css.getPropertyValue('--text-dim').trim();
+  const cText = css.getPropertyValue('--text').trim();
+
+  let start = null, current = null, trail = [];
+  let deviceHeading = null, dispHeading = 0;
+  let accuracy = null, speedMps = null, lastFixTime = null, lastFixPos = null;
+  let startTime = null, arrived = false;
+  let dispMaxDist = 40;
+  let particles = [];
+  let watchId = null;
 
   function loadStart(){
     try {
       const raw = localStorage.getItem('bussola_start');
       const rawTrail = localStorage.getItem('bussola_trail');
+      const rawTime = localStorage.getItem('bussola_time');
       if (raw) { start = JSON.parse(raw); statusEl.textContent = 'Punto di partenza caricato. In cammino!'; }
-      if (rawTrail) { trail = JSON.parse(rawTrail) || []; }
+      if (rawTrail) trail = JSON.parse(rawTrail) || [];
+      if (rawTime) startTime = parseInt(rawTime,10);
     } catch(e) {}
   }
-  function saveStart(){ try { localStorage.setItem('bussola_start', JSON.stringify(start)); } catch(e) {} }
+  function saveStart(){ try { localStorage.setItem('bussola_start', JSON.stringify(start)); localStorage.setItem('bussola_time', String(startTime)); } catch(e) {} }
   function saveTrail(){ try { localStorage.setItem('bussola_trail', JSON.stringify(trail.slice(-300))); } catch(e) {} }
-  function clearAll(){ try { localStorage.removeItem('bussola_start'); localStorage.removeItem('bussola_trail'); } catch(e) {} }
+  function clearAll(){ try { localStorage.removeItem('bussola_start'); localStorage.removeItem('bussola_trail'); localStorage.removeItem('bussola_time'); } catch(e) {} }
 
   function toRad(d){ return d*Math.PI/180; }
   function toDeg(r){ return r*180/Math.PI; }
-
   function distanceMeters(a,b){
-    const R = 6371000;
-    const dLat = toRad(b.lat-a.lat), dLon = toRad(b.lon-a.lon);
-    const lat1 = toRad(a.lat), lat2 = toRad(b.lat);
-    const h = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+    const R=6371000, dLat=toRad(b.lat-a.lat), dLon=toRad(b.lon-a.lon);
+    const lat1=toRad(a.lat), lat2=toRad(b.lat);
+    const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
     return R*2*Math.atan2(Math.sqrt(h), Math.sqrt(1-h));
   }
   function bearingTo(a,b){
-    const lat1 = toRad(a.lat), lat2 = toRad(b.lat), dLon = toRad(b.lon-a.lon);
-    const y = Math.sin(dLon)*Math.cos(lat2);
-    const x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+    const lat1=toRad(a.lat), lat2=toRad(b.lat), dLon=toRad(b.lon-a.lon);
+    const y=Math.sin(dLon)*Math.cos(lat2);
+    const x=Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
     return (toDeg(Math.atan2(y,x))+360)%360;
   }
-  // East/North offset in meters of point b relative to origin a (flat approx, fine for short range)
   function localOffset(origin, p){
-    const latRad = toRad(origin.lat);
-    const mPerDegLat = 110540;
-    const mPerDegLon = 111320*Math.cos(latRad);
-    return { e: (p.lon-origin.lon)*mPerDegLon, n: (p.lat-origin.lat)*mPerDegLat };
+    const latRad=toRad(origin.lat), mLat=110540, mLon=111320*Math.cos(latRad);
+    return { e:(p.lon-origin.lon)*mLon, n:(p.lat-origin.lat)*mLat };
   }
-  function formatDist(m){
-    if (m < 1000) return [Math.round(m), 'm'];
-    return [(m/1000).toFixed(2), 'km'];
+  function fmt(m){ return m<1000 ? [Math.round(m),'m'] : [(m/1000).toFixed(2),'km']; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function lerpAngle(a,b,t){
+    let d = ((b-a+540)%360)-180;
+    return (a + d*t + 360) % 360;
   }
+  function hash2(x,y){ let h=Math.sin(x*127.1+y*311.7)*43758.5453; return h-Math.floor(h); }
 
-  // deterministic pseudo-random "trees" pattern anchored to world coords
-  function hash2(x,y){
-    let h = Math.sin(x*127.1 + y*311.7)*43758.5453;
-    return h - Math.floor(h);
-  }
   function drawTrees(scale, range){
-    const cellM = 18; // meters between grid cells
-    const cells = Math.ceil(range/cellM) + 1;
-    // origin cell coords based on current position in meters (approx, stable enough)
-    const originE = current.__e0 || 0, originN = current.__n0 || 0;
+    const cellM = 16, cells = Math.ceil(range/cellM)+1;
     for (let gx=-cells; gx<=cells; gx++){
       for (let gy=-cells; gy<=cells; gy++){
-        const wx = Math.round(originE/cellM)+gx;
-        const wy = Math.round(originN/cellM)+gy;
-        const r1 = hash2(wx, wy);
-        if (r1 > 0.62) continue; // density
-        const jx = (hash2(wx+0.13, wy)-0.5)*cellM*0.8;
-        const jy = (hash2(wx, wy+0.37)-0.5)*cellM*0.8;
-        const e = wx*cellM + jx - originE;
-        const n = wy*cellM + jy - originN;
-        const dx = CX + e*scale;
-        const dy = CY - n*scale;
-        const dist2 = (dx-CX)**2 + (dy-CY)**2;
-        if (dist2 > (W/2)**2) continue;
-        const size = 3 + hash2(wx*2,wy*2)*3;
+        const wx = gx, wy = gy;
+        const r1 = hash2(wx*3.1+1000, wy*3.1+1000);
+        if (r1 > 0.58) continue;
+        const jx=(hash2(wx+0.13,wy)-0.5)*cellM*0.85;
+        const jy=(hash2(wx,wy+0.37)-0.5)*cellM*0.85;
+        const e = wx*cellM+jx, n = wy*cellM+jy;
+        const dx = CX+e*scale, dy = CY-n*scale;
+        const dist2=(dx-CX)**2+(dy-CY)**2;
+        if (dist2 > (W/2-6)**2) continue;
+        const sz = (3.2+hash2(wx*2,wy*2)*2.6) * Math.min(1.4, 90/range*scale*40+0.6);
+        const tone = hash2(wx*5,wy*5);
+        const col = tone>0.5 ? 'rgba(88,209,106,0.30)' : 'rgba(60,150,80,0.24)';
+        // shadow
         ctx.beginPath();
-        ctx.moveTo(dx, dy-size*1.6);
-        ctx.lineTo(dx-size, dy+size*0.6);
-        ctx.lineTo(dx+size, dy+size*0.6);
+        ctx.ellipse(dx+1, dy+sz*0.7, sz*0.8, sz*0.35, 0, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.fill();
+        // canopy
+        ctx.beginPath();
+        ctx.moveTo(dx, dy-sz*1.5);
+        ctx.lineTo(dx-sz, dy+sz*0.5);
+        ctx.lineTo(dx+sz, dy+sz*0.5);
         ctx.closePath();
-        ctx.fillStyle = 'rgba(111,207,122,0.28)';
+        ctx.fillStyle = col;
         ctx.fill();
       }
     }
   }
 
+  function spawnParticles(){
+    particles = [];
+    for (let i=0;i<22;i++){
+      const ang = Math.random()*Math.PI*2;
+      const sp = 2+Math.random()*3.5;
+      particles.push({ x:CX, y:CY, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp, life:1 });
+    }
+  }
+  function updateParticles(){
+    for (const p of particles){
+      p.x += p.vx; p.y += p.vy; p.vx*=0.96; p.vy*=0.96; p.life -= 0.018;
+    }
+    particles = particles.filter(p=>p.life>0);
+    for (const p of particles){
+      ctx.beginPath();
+      ctx.arc(p.x,p.y, 3*p.life, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,184,77,${p.life})`;
+      ctx.fill();
+    }
+  }
+
   function render(){
     ctx.clearRect(0,0,W,H);
-    // background
     const grad = ctx.createRadialGradient(CX,CY,10,CX,CY,W/2);
-    grad.addColorStop(0, 'rgba(111,207,122,0.10)');
-    grad.addColorStop(1, cBg2);
+    grad.addColorStop(0, 'rgba(88,209,106,0.10)');
+    grad.addColorStop(0.7, 'rgba(16,31,21,1)');
+    grad.addColorStop(1, 'rgba(8,16,11,1)');
     ctx.fillStyle = grad;
     ctx.fillRect(0,0,W,H);
 
-    if (!current) {
-      ctx.fillStyle = cTextDim;
-      ctx.font = '20px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('In attesa del GPS…', CX, CY);
+    if (!current){
+      ctx.fillStyle = cTextDim; ctx.font = '18px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('In attesa del segnale GPS…', CX, CY);
+      requestAnimationFrame(render);
       return;
     }
 
-    // determine range (auto-zoom): fit start point + recent trail, min 40m
-    let maxDist = 40;
-    if (start) maxDist = Math.max(maxDist, distanceMeters(current, start)*1.25);
-    for (const p of trail.slice(-60)) {
-      maxDist = Math.max(maxDist, distanceMeters(current, p)*1.15);
-    }
-    maxDist = Math.min(maxDist, 2000);
-    const scale = (W/2 - 30) / maxDist; // px per meter
-    rangeBadge.textContent = Math.round(maxDist) + ' m di raggio';
+    let targetMax = 40;
+    if (start) targetMax = Math.max(targetMax, distanceMeters(current,start)*1.3);
+    for (const p of trail.slice(-60)) targetMax = Math.max(targetMax, distanceMeters(current,p)*1.15);
+    targetMax = Math.min(targetMax, 2000);
+    dispMaxDist = lerp(dispMaxDist, targetMax, 0.06);
+    const scale = (W/2-28)/dispMaxDist;
+    const off = p => localOffset(current, p);
 
-    current.__e0 = 0; current.__n0 = 0; // origin is current position
+    drawTrees(scale, dispMaxDist);
 
-    // compute offsets relative to current using a stable world anchor (use current lat for meter conversion)
-    function off(p){ return localOffset(current, p); }
-
-    // trees
-    drawTrees(scale, maxDist);
-
-    // concentric range rings
-    ctx.strokeStyle = 'rgba(238,245,238,0.08)';
+    // range rings (dashed)
+    ctx.setLineDash([4,6]);
+    ctx.strokeStyle = 'rgba(242,248,242,0.07)';
     ctx.lineWidth = 1;
     for (let f=1; f<=3; f++){
+      ctx.beginPath(); ctx.arc(CX,CY,(W/2-28)*(f/3),0,Math.PI*2); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // compass ticks
+    for (let a=0; a<360; a+=30){
+      const rad = toRad(a-90);
+      const r1 = W/2-6, r2 = a%90===0 ? W/2-16 : W/2-11;
       ctx.beginPath();
-      ctx.arc(CX, CY, (W/2-30)*(f/3), 0, Math.PI*2);
+      ctx.moveTo(CX+Math.cos(rad)*r1, CY+Math.sin(rad)*r1);
+      ctx.lineTo(CX+Math.cos(rad)*r2, CY+Math.sin(rad)*r2);
+      ctx.strokeStyle = 'rgba(242,248,242,0.18)';
+      ctx.lineWidth = a%90===0 ? 2 : 1;
       ctx.stroke();
     }
+    ctx.textAlign='center'; ctx.font='bold 16px sans-serif';
+    ctx.fillStyle = cAccent2; ctx.fillText('N', CX, 26);
+    ctx.font='13px sans-serif'; ctx.fillStyle = cTextDim;
+    ctx.fillText('S', CX, H-14); ctx.fillText('E', W-18, CY+5); ctx.fillText('O', 18, CY+5);
 
-    // compass ring labels (north-up)
-    ctx.fillStyle = cAccent2;
-    ctx.font = 'bold 15px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('N', CX, 20);
-    ctx.fillStyle = cTextDim;
-    ctx.fillText('S', CX, H-10);
-    ctx.fillText('E', W-16, CY+5);
-    ctx.fillText('O', 16, CY+5);
-
-    // trail
-    if (trail.length > 1) {
-      ctx.beginPath();
-      ctx.strokeStyle = cTrail;
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      let started = false;
-      for (const p of trail) {
-        const o = off(p);
-        const x = CX + o.e*scale, y = CY - o.n*scale;
-        if (!started) { ctx.moveTo(x,y); started = true; } else { ctx.lineTo(x,y); }
+    // trail with fading gradient
+    if (trail.length > 1){
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      const n = trail.length;
+      for (let i=1;i<n;i++){
+        const p0=trail[i-1], p1=trail[i];
+        const o0=off(p0), o1=off(p1);
+        const alpha = 0.15 + 0.55*(i/n);
+        ctx.beginPath();
+        ctx.moveTo(CX+o0.e*scale, CY-o0.n*scale);
+        ctx.lineTo(CX+o1.e*scale, CY-o1.n*scale);
+        ctx.strokeStyle = `rgba(79,214,106,${alpha})`;
+        ctx.lineWidth = 4;
+        ctx.stroke();
       }
-      ctx.stroke();
     }
 
     // start marker
-    if (start) {
+    if (start){
       const d = distanceMeters(current, start);
       const o = off(start);
-      let x = CX + o.e*scale, y = CY - o.n*scale;
-      const distFromCenter = Math.hypot(x-CX, y-CY);
-      const maxR = W/2 - 22;
-      let onEdge = false;
-      if (distFromCenter > maxR) {
-        const ang = Math.atan2(y-CY, x-CX);
-        x = CX + Math.cos(ang)*maxR;
-        y = CY + Math.sin(ang)*maxR;
-        onEdge = true;
+      let x=CX+o.e*scale, y=CY-o.n*scale;
+      const distC = Math.hypot(x-CX,y-CY), maxR=W/2-26;
+      let onEdge=false;
+      if (distC>maxR){ const ang=Math.atan2(y-CY,x-CX); x=CX+Math.cos(ang)*maxR; y=CY+Math.sin(ang)*maxR; onEdge=true; }
+      const pulse = 0.5+0.5*Math.sin(Date.now()/400);
+      ctx.beginPath(); ctx.arc(x,y,13+pulse*4,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,184,77,${0.18+pulse*0.12})`; ctx.fill();
+      ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2);
+      ctx.fillStyle = cAccent2; ctx.fill();
+      ctx.strokeStyle='#0a140d'; ctx.lineWidth=2; ctx.stroke();
+      if (onEdge){ ctx.font='12px sans-serif'; ctx.fillStyle=cAccent2; ctx.fillText('▲', x, y-16); }
+
+      if (d < 15 && !arrived){
+        arrived = true; spawnParticles();
+        try { if (navigator.vibrate) navigator.vibrate([100,60,100]); } catch(e){}
       }
-      // marker pin
-      ctx.beginPath();
-      ctx.arc(x, y, 9, 0, Math.PI*2);
-      ctx.fillStyle = cAccent2;
-      ctx.fill();
-      ctx.strokeStyle = cBg2;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      if (onEdge) {
-        ctx.font = '11px sans-serif';
-        ctx.fillStyle = cAccent2;
-        ctx.textAlign = 'center';
-        ctx.fillText('▲', x, y-14);
-      }
+      if (d >= 15) arrived = false;
     }
 
-    // player marker (center)
-    ctx.beginPath();
-    ctx.arc(CX, CY, 10, 0, Math.PI*2);
-    ctx.fillStyle = cAccent;
-    ctx.fill();
-    ctx.strokeStyle = '#ffffff44';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    if (deviceHeading !== null) {
-      const ang = toRad(deviceHeading - 90);
-      const hx = CX + Math.cos(ang)*20, hy = CY + Math.sin(ang)*20;
-      ctx.beginPath();
-      ctx.moveTo(CX, CY);
-      ctx.lineTo(hx, hy);
-      ctx.strokeStyle = cText;
-      ctx.lineWidth = 2;
-      ctx.stroke();
+    updateParticles();
+
+    // accuracy ring
+    if (accuracy){
+      const r = Math.min(accuracy*scale, W/2-20);
+      ctx.beginPath(); ctx.arc(CX,CY,Math.max(r,14),0,Math.PI*2);
+      ctx.strokeStyle = 'rgba(88,209,106,0.35)'; ctx.setLineDash([3,4]); ctx.lineWidth=1.5;
+      ctx.stroke(); ctx.setLineDash([]);
     }
+
+    // player marker with breathing glow
+    const bpulse = 0.5+0.5*Math.sin(Date.now()/500);
+    ctx.beginPath(); ctx.arc(CX,CY,15+bpulse*3,0,Math.PI*2);
+    ctx.fillStyle = `rgba(88,209,106,${0.18+bpulse*0.12})`; ctx.fill();
+    ctx.beginPath(); ctx.arc(CX,CY,9,0,Math.PI*2);
+    ctx.fillStyle = cAccent; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2; ctx.stroke();
+
+    if (deviceHeading !== null){
+      dispHeading = lerpAngle(dispHeading, deviceHeading, 0.15);
+      const ang = toRad(dispHeading-90);
+      const hx1=CX+Math.cos(ang)*13, hy1=CY+Math.sin(ang)*13;
+      const hx2=CX+Math.cos(ang)*24, hy2=CY+Math.sin(ang)*24;
+      ctx.beginPath(); ctx.moveTo(hx1,hy1); ctx.lineTo(hx2,hy2);
+      ctx.strokeStyle=cText; ctx.lineWidth=3; ctx.lineCap='round'; ctx.stroke();
+    }
+
+    requestAnimationFrame(render);
   }
 
-  function update(){
+  function updateStats(){
+    if (accuracy!=null) accEl.textContent = '±'+Math.round(accuracy)+'m'; else accEl.textContent='—';
+    if (speedMps!=null) spdEl.textContent = (speedMps*3.6).toFixed(1)+' km/h'; else spdEl.textContent='—';
+    if (startTime){
+      const s = Math.floor((Date.now()-startTime)/1000);
+      const mm = String(Math.floor(s/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0');
+      elapsedEl.textContent = mm+':'+ss;
+    } else elapsedEl.textContent='—';
+  }
+  setInterval(updateStats, 1000);
+
+  function updateStatusAndDist(){
     if (!current) return;
-    if (start) {
-      const d = distanceMeters(current, start);
-      const [val, unit] = formatDist(d);
-      distEl.innerHTML = val + ' <small>' + unit + '</small>';
-      if (d < 15) {
-        statusEl.textContent = 'Sei arrivato al punto di partenza! 🎉';
-        statusEl.className = 'status';
-      } else {
-        const b = bearingTo(current, start);
-        statusEl.textContent = 'Direzione: ' + Math.round(b) + '° — segui il puntino arancione sulla mappa';
-        statusEl.className = 'status';
-      }
-    } else {
-      distEl.innerHTML = '— <small>m</small>';
-    }
-    render();
+    if (start){
+      const d = distanceMeters(current,start);
+      const [val,unit] = fmt(d);
+      distEl.innerHTML = val+' <small>'+unit+'</small>';
+      if (d<15){ statusEl.textContent='Sei arrivato al punto di partenza! 🎉'; statusEl.className='status ok'; }
+      else { const b=bearingTo(current,start); statusEl.textContent='Direzione: '+Math.round(b)+'° — segui il pin arancione'; statusEl.className='status'; }
+    } else distEl.innerHTML = '— <small>m</small>';
   }
 
   function onPosition(pos){
-    current = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-    if (start) {
+    const c = pos.coords;
+    const newCurrent = { lat:c.latitude, lon:c.longitude };
+    accuracy = c.accuracy || null;
+    if (typeof c.speed === 'number' && c.speed !== null && c.speed >= 0) speedMps = c.speed;
+    else if (lastFixPos && lastFixTime) {
+      const dt = (Date.now()-lastFixTime)/1000;
+      if (dt>0.5) speedMps = distanceMeters(lastFixPos,newCurrent)/dt;
+    }
+    lastFixPos = newCurrent; lastFixTime = Date.now();
+    current = newCurrent;
+    if (start){
       const last = trail[trail.length-1];
-      if (!last || distanceMeters(last, current) > 4) {
-        trail.push(current);
-        saveTrail();
-      }
+      if (!last || distanceMeters(last,current)>4){ trail.push(current); saveTrail(); }
     }
-    update();
+    updateStatusAndDist();
   }
-  function onPosError(err){
-    statusEl.textContent = 'Errore GPS: ' + err.message;
-    statusEl.className = 'status err';
-  }
+  function onPosError(err){ statusEl.textContent='Errore GPS: '+err.message; statusEl.className='status err'; }
   function startWatch(){
-    if (!navigator.geolocation) {
-      statusEl.textContent = 'GPS non disponibile su questo dispositivo/browser.';
-      statusEl.className = 'status err';
-      return;
-    }
-    if (watchId !== null) return;
-    watchId = navigator.geolocation.watchPosition(onPosition, onPosError, {
-      enableHighAccuracy: true, maximumAge: 2000, timeout: 15000
-    });
+    if (!navigator.geolocation){ statusEl.textContent='GPS non disponibile su questo dispositivo/browser.'; statusEl.className='status err'; return; }
+    if (watchId!==null) return;
+    watchId = navigator.geolocation.watchPosition(onPosition, onPosError, { enableHighAccuracy:true, maximumAge:2000, timeout:15000 });
   }
-
   function onOrientation(e){
-    let heading = null;
-    if (typeof e.webkitCompassHeading === 'number') heading = e.webkitCompassHeading;
-    else if (e.alpha !== null) heading = (360 - e.alpha) % 360;
-    if (heading !== null) { deviceHeading = heading; render(); }
+    let h=null;
+    if (typeof e.webkitCompassHeading==='number') h=e.webkitCompassHeading;
+    else if (e.alpha!==null) h=(360-e.alpha)%360;
+    if (h!==null) deviceHeading=h;
   }
   function requestOrientationPermission(){
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      DeviceOrientationEvent.requestPermission().then(state => {
-        if (state === 'granted') {
-          window.addEventListener('deviceorientationabsolute', onOrientation, true);
-          window.addEventListener('deviceorientation', onOrientation, true);
-        }
+    if (typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission().then(state=>{
+        if (state==='granted'){ window.addEventListener('deviceorientationabsolute',onOrientation,true); window.addEventListener('deviceorientation',onOrientation,true); }
       }).catch(()=>{});
-    } else if ('DeviceOrientationEvent' in window) {
-      window.addEventListener('deviceorientationabsolute', onOrientation, true);
-      window.addEventListener('deviceorientation', onOrientation, true);
+    } else if ('DeviceOrientationEvent' in window){
+      window.addEventListener('deviceorientationabsolute',onOrientation,true); window.addEventListener('deviceorientation',onOrientation,true);
     }
   }
 
   setBtn.addEventListener('click', function(){
-    setBtn.disabled = true;
-    statusEl.textContent = 'Acquisizione posizione…';
-    statusEl.className = 'status';
-    if (!navigator.geolocation) {
-      statusEl.textContent = 'GPS non disponibile su questo dispositivo/browser.';
-      statusEl.className = 'status err';
-      setBtn.disabled = false;
-      return;
-    }
+    setBtn.disabled = true; statusEl.textContent='Acquisizione posizione…'; statusEl.className='status';
+    if (!navigator.geolocation){ statusEl.textContent='GPS non disponibile.'; statusEl.className='status err'; setBtn.disabled=false; return; }
     navigator.geolocation.getCurrentPosition(function(pos){
-      start = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-      current = start;
-      trail = [start];
+      start = { lat:pos.coords.latitude, lon:pos.coords.longitude };
+      current = start; trail=[start]; startTime = Date.now(); arrived=false;
       saveStart(); saveTrail();
-      requestOrientationPermission();
-      startWatch();
-      statusEl.textContent = 'Partenza salvata! Ora puoi camminare liberamente.';
-      setBtn.disabled = false;
-      render();
-    }, function(err){
-      statusEl.textContent = 'Errore GPS: ' + err.message;
-      statusEl.className = 'status err';
-      setBtn.disabled = false;
-    }, { enableHighAccuracy: true, timeout: 15000 });
+      requestOrientationPermission(); startWatch();
+      statusEl.textContent='Partenza salvata! Ora puoi camminare liberamente.'; statusEl.className='status ok';
+      setBtn.disabled=false;
+    }, function(err){ statusEl.textContent='Errore GPS: '+err.message; statusEl.className='status err'; setBtn.disabled=false; }, { enableHighAccuracy:true, timeout:15000 });
   });
 
   resetBtn.addEventListener('click', function(){
-    start = null; trail = [];
+    start=null; trail=[]; startTime=null; arrived=false; particles=[];
     clearAll();
-    distEl.innerHTML = '— <small>m</small>';
-    statusEl.textContent = 'Punto di partenza cancellato.';
-    statusEl.className = 'status';
-    render();
+    distEl.innerHTML='— <small>m</small>';
+    statusEl.textContent='Punto di partenza cancellato.'; statusEl.className='status';
   });
 
   loadStart();
-  render();
-  if (start) { requestOrientationPermission(); startWatch(); }
+  requestAnimationFrame(render);
+  if (start){ requestOrientationPermission(); startWatch(); }
 })();
 </script>
 </body>
