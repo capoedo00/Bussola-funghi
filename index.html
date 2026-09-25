@@ -70,12 +70,35 @@
     background: #0a140d;
   }
   canvas { width: 100%; height: 100%; display: block; }
+  .zoom-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 2px; }
+  .zoom-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid rgba(88,209,106,0.35);
+    background: rgba(88,209,106,0.10); color: var(--accent); font-size: 1.3rem; font-weight: 700;
+    line-height: 1; padding: 0; cursor: pointer; flex: none; -webkit-tap-highlight-color: transparent;
+  }
+  .zoom-btn:active { background: rgba(88,209,106,0.22); }
+  .zoom-label { font-size: 0.78rem; color: var(--text-dim); min-width: 52px; text-align: center; }
   .distance { font-size: 2.3rem; font-weight: 700; margin-top: 2px; letter-spacing: -0.5px; }
   .distance small { font-size: 1rem; color: var(--text-dim); font-weight: 500; }
   .status { font-size: 0.85rem; color: var(--text-dim); text-align: center; min-height: 1.3em; padding: 0 8px; }
   .status.ok { color: var(--accent); font-weight: 600; }
   .status.warn { color: var(--accent2); }
   .status.err { color: var(--danger); }
+  .home-btn {
+    width: 100%; margin-top: 12px; border: none; border-radius: 16px; padding: 15px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(160deg, #ffcb70, var(--accent2)); color: #241404;
+    box-shadow: 0 4px 14px rgba(255,184,77,0.25); display: none;
+  }
+  .home-btn:active { transform: scale(0.98); }
+  .guidance-panel {
+    display: none; margin-top: 12px; padding: 18px; border-radius: 18px;
+    background: rgba(255,184,77,0.08); border: 1px solid rgba(255,184,77,0.28);
+    flex-direction: column; align-items: center; gap: 4px;
+  }
+  .guidance-arrow { font-size: 2.4rem; transition: transform 0.25s ease; }
+  .guidance-text { font-size: 1.25rem; font-weight: 700; }
+  .guidance-sub { font-size: 0.78rem; color: var(--text-dim); }
   .btn-row { display: flex; gap: 10px; width: 100%; max-width: 420px; margin-top: 4px; }
   button {
     flex: 1; border: none; border-radius: 16px; padding: 15px 10px;
@@ -100,8 +123,19 @@
       <span>Tempo: <b id="elapsed">—</b></span>
     </div>
     <div class="map-box"><canvas id="map" width="640" height="640"></canvas></div>
+    <div class="zoom-row">
+      <button class="zoom-btn" id="zoomOut" aria-label="Riduci zoom">−</button>
+      <span class="zoom-label" id="zoomLabel">60 m</span>
+      <button class="zoom-btn" id="zoomIn" aria-label="Aumenta zoom">+</button>
+    </div>
     <div class="distance" id="distance">— <small>m</small></div>
     <div class="status" id="status">Tocca "Imposta partenza" quando sei pronto.</div>
+    <button class="home-btn" id="homeBtn">🏠 Portami a casa</button>
+    <div class="guidance-panel" id="guidancePanel">
+      <div class="guidance-arrow" id="guidanceArrow">⬆</div>
+      <div class="guidance-text" id="guidanceText">Vai dritto</div>
+      <div class="guidance-sub" id="guidanceSub"></div>
+    </div>
   </div>
 
   <div class="btn-row">
@@ -120,8 +154,26 @@
   const accEl = document.getElementById('acc');
   const spdEl = document.getElementById('spd');
   const elapsedEl = document.getElementById('elapsed');
+  let dispMaxDist = 60;
+  let manualRange = 60;
+  const RANGE_MIN = 15, RANGE_MAX = 3000;
   const setBtn = document.getElementById('setStart');
   const resetBtn = document.getElementById('reset');
+  const zoomInBtn = document.getElementById('zoomIn');
+  const zoomOutBtn = document.getElementById('zoomOut');
+  const zoomLabel = document.getElementById('zoomLabel');
+  const homeBtn = document.getElementById('homeBtn');
+  const guidancePanel = document.getElementById('guidancePanel');
+  const guidanceArrow = document.getElementById('guidanceArrow');
+  const guidanceText = document.getElementById('guidanceText');
+  const guidanceSub = document.getElementById('guidanceSub');
+  let guidanceOpen = false;
+
+  function setRange(r){
+    manualRange = Math.max(RANGE_MIN, Math.min(RANGE_MAX, r));
+    zoomLabel.textContent = manualRange >= 1000 ? (manualRange/1000).toFixed(1)+' km' : Math.round(manualRange)+' m';
+  }
+  setRange(manualRange);
 
   const W = canvas.width, H = canvas.height, CX = W/2, CY = H/2;
   const css = getComputedStyle(document.documentElement);
@@ -135,7 +187,6 @@
   let deviceHeading = null, dispHeading = 0;
   let accuracy = null, speedMps = null, lastFixTime = null, lastFixPos = null;
   let startTime = null, arrived = false;
-  let dispMaxDist = 40;
   let particles = [];
   let watchId = null;
 
@@ -180,19 +231,23 @@
   function hash2(x,y){ let h=Math.sin(x*127.1+y*311.7)*43758.5453; return h-Math.floor(h); }
 
   function drawTrees(scale, range){
-    const cellM = 16, cells = Math.ceil(range/cellM)+1;
+    // keep a roughly constant number/size of trees on screen regardless of zoom level,
+    // by scaling the world grid spacing together with the visible range.
+    const targetCells = 8;
+    const cellM = Math.max(5, range/targetCells);
+    const cells = targetCells + 1;
     for (let gx=-cells; gx<=cells; gx++){
       for (let gy=-cells; gy<=cells; gy++){
         const wx = gx, wy = gy;
         const r1 = hash2(wx*3.1+1000, wy*3.1+1000);
-        if (r1 > 0.58) continue;
+        if (r1 > 0.5) continue;
         const jx=(hash2(wx+0.13,wy)-0.5)*cellM*0.85;
         const jy=(hash2(wx,wy+0.37)-0.5)*cellM*0.85;
-        const e = wx*cellM+jx, n = wy*cellM+jy;
+        const e = gx*cellM+jx, n = gy*cellM+jy;
         const dx = CX+e*scale, dy = CY-n*scale;
         const dist2=(dx-CX)**2+(dy-CY)**2;
         if (dist2 > (W/2-6)**2) continue;
-        const sz = (3.2+hash2(wx*2,wy*2)*2.6) * Math.min(1.4, 90/range*scale*40+0.6);
+        const sz = 7 + hash2(wx*2,wy*2)*4;
         const tone = hash2(wx*5,wy*5);
         const col = tone>0.5 ? 'rgba(88,209,106,0.30)' : 'rgba(60,150,80,0.24)';
         // shadow
@@ -249,11 +304,7 @@
       return;
     }
 
-    let targetMax = 40;
-    if (start) targetMax = Math.max(targetMax, distanceMeters(current,start)*1.3);
-    for (const p of trail.slice(-60)) targetMax = Math.max(targetMax, distanceMeters(current,p)*1.15);
-    targetMax = Math.min(targetMax, 2000);
-    dispMaxDist = lerp(dispMaxDist, targetMax, 0.06);
+    dispMaxDist = lerp(dispMaxDist, manualRange, 0.15);
     const scale = (W/2-28)/dispMaxDist;
     const off = p => localOffset(current, p);
 
@@ -362,6 +413,7 @@
       const mm = String(Math.floor(s/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0');
       elapsedEl.textContent = mm+':'+ss;
     } else elapsedEl.textContent='—';
+    updateGuidance();
   }
   setInterval(updateStats, 1000);
 
@@ -392,6 +444,7 @@
       if (!last || distanceMeters(last,current)>4){ trail.push(current); saveTrail(); }
     }
     updateStatusAndDist();
+    updateGuidance();
   }
   function onPosError(err){ statusEl.textContent='Errore GPS: '+err.message; statusEl.className='status err'; }
   function startWatch(){
@@ -403,7 +456,7 @@
     let h=null;
     if (typeof e.webkitCompassHeading==='number') h=e.webkitCompassHeading;
     else if (e.alpha!==null) h=(360-e.alpha)%360;
-    if (h!==null) deviceHeading=h;
+    if (h!==null) { deviceHeading=h; updateGuidance(); }
   }
   function requestOrientationPermission(){
     if (typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
@@ -415,6 +468,52 @@
     }
   }
 
+  function showHomeUI(show){
+    homeBtn.style.display = show ? 'block' : 'none';
+    if (!show){ guidanceOpen = false; guidancePanel.style.display = 'none'; homeBtn.textContent = '🏠 Portami a casa'; }
+  }
+  function updateGuidance(){
+    if (!guidanceOpen || !start || !current) return;
+    const d = distanceMeters(current, start);
+    if (d < 15){
+      guidanceText.textContent = 'Sei arrivato! 🎉';
+      guidanceSub.textContent = '';
+      guidanceArrow.textContent = '✓';
+      guidanceArrow.style.transform = 'rotate(0deg)';
+      return;
+    }
+    const bearing = bearingTo(current, start);
+    const [val, unit] = fmt(d);
+    if (deviceHeading === null){
+      guidanceText.textContent = 'Attiva la bussola';
+      guidanceSub.textContent = 'Direzione da seguire: ' + Math.round(bearing) + '° · ' + val + ' ' + unit;
+      guidanceArrow.textContent = '⬆';
+      guidanceArrow.style.transform = 'rotate(0deg)';
+      return;
+    }
+    let diff = ((bearing - deviceHeading + 540) % 360) - 180; // -180..180, positive = turn right
+    const a = Math.abs(diff);
+    let text;
+    if (a <= 15) text = 'Vai dritto';
+    else if (a <= 45) text = diff>0 ? 'Leggermente a destra' : 'Leggermente a sinistra';
+    else if (a <= 120) text = diff>0 ? 'Gira a destra' : 'Gira a sinistra';
+    else if (a <= 160) text = diff>0 ? 'Decisamente a destra' : 'Decisamente a sinistra';
+    else text = 'Torna indietro';
+    guidanceText.textContent = text;
+    guidanceSub.textContent = val + ' ' + unit + ' da percorrere';
+    guidanceArrow.textContent = '⬆';
+    guidanceArrow.style.transform = 'rotate(' + diff + 'deg)';
+  }
+  homeBtn.addEventListener('click', function(){
+    guidanceOpen = !guidanceOpen;
+    guidancePanel.style.display = guidanceOpen ? 'flex' : 'none';
+    homeBtn.textContent = guidanceOpen ? '✕ Chiudi indicazioni' : '🏠 Portami a casa';
+    updateGuidance();
+  });
+
+  zoomInBtn.addEventListener('click', function(){ setRange(manualRange/1.5); });
+  zoomOutBtn.addEventListener('click', function(){ setRange(manualRange*1.5); });
+
   setBtn.addEventListener('click', function(){
     setBtn.disabled = true; statusEl.textContent='Acquisizione posizione…'; statusEl.className='status';
     if (!navigator.geolocation){ statusEl.textContent='GPS non disponibile.'; statusEl.className='status err'; setBtn.disabled=false; return; }
@@ -424,6 +523,7 @@
       saveStart(); saveTrail();
       requestOrientationPermission(); startWatch();
       statusEl.textContent='Partenza salvata! Ora puoi camminare liberamente.'; statusEl.className='status ok';
+      showHomeUI(true);
       setBtn.disabled=false;
     }, function(err){ statusEl.textContent='Errore GPS: '+err.message; statusEl.className='status err'; setBtn.disabled=false; }, { enableHighAccuracy:true, timeout:15000 });
   });
@@ -433,11 +533,12 @@
     clearAll();
     distEl.innerHTML='— <small>m</small>';
     statusEl.textContent='Punto di partenza cancellato.'; statusEl.className='status';
+    showHomeUI(false);
   });
 
   loadStart();
   requestAnimationFrame(render);
-  if (start){ requestOrientationPermission(); startWatch(); }
+  if (start){ requestOrientationPermission(); startWatch(); showHomeUI(true); }
 })();
 </script>
 </body>
