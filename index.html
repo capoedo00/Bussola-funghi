@@ -110,24 +110,6 @@
   .secondary { background: transparent; color: var(--danger); border: 1.5px solid rgba(255,107,107,0.5); }
   .primary:disabled { opacity: 0.5; box-shadow: none; }
   .info { font-size: 0.72rem; color: var(--text-dim); text-align: center; margin-top: 14px; max-width: 400px; line-height: 1.5; }
-
-  .map-box::after {
-    content: 'DIREZIONE';
-    position: absolute;
-    top: 12px;
-    right: 14px;
-    padding: 5px 8px;
-    border-radius: 999px;
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: rgba(255,255,255,0.72);
-    background: rgba(8,18,11,0.42);
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(6px);
-    pointer-events: none;
-  }
-
 </style>
 </head>
 <body>
@@ -403,83 +385,34 @@
       ctx.stroke(); ctx.setLineDash([]);
     }
 
-    // PLAYER MARKER: elegante triangolo orientato verso dove stai guardando
-    // Il cono ruota con la bussola del telefono: 0° = Nord (parte alta della mappa).
+    // player marker: directional arrow showing which way the phone is facing
     const bpulse = 0.5+0.5*Math.sin(Date.now()/500);
+    ctx.beginPath(); ctx.arc(CX,CY,16+bpulse*3,0,Math.PI*2);
+    ctx.fillStyle = `rgba(88,209,106,${0.18+bpulse*0.12})`; ctx.fill();
 
     if (deviceHeading !== null){
       dispHeading = lerpAngle(dispHeading, deviceHeading, 0.15);
-
-      const ang = toRad(dispHeading-90);
-      const fov = toRad(46);
-      const tipR = 48;
-      const baseR = 10;
-
-      // Alone morbido attorno al triangolo
       ctx.save();
       ctx.translate(CX, CY);
-      ctx.rotate(ang);
-
-      const glow = ctx.createRadialGradient(0,0,4,0,0,tipR);
-      glow.addColorStop(0, 'rgba(88,209,106,0.22)');
-      glow.addColorStop(1, 'rgba(88,209,106,0)');
-      ctx.fillStyle = glow;
+      ctx.rotate(toRad(dispHeading));
       ctx.beginPath();
-      ctx.arc(0,0,tipR+8,0,Math.PI*2);
-      ctx.fill();
-
-      // Campo visivo triangolare
-      const cone = ctx.createLinearGradient(0,0,tipR,0);
-      cone.addColorStop(0, 'rgba(88,209,106,0.30)');
-      cone.addColorStop(0.55, 'rgba(88,209,106,0.14)');
-      cone.addColorStop(1, 'rgba(88,209,106,0.025)');
-
-      ctx.beginPath();
-      ctx.moveTo(baseR, 0);
-      ctx.lineTo(tipR*Math.cos(fov), -tipR*Math.sin(fov));
-      ctx.lineTo(tipR, 0);
-      ctx.lineTo(tipR*Math.cos(fov), tipR*Math.sin(fov));
+      ctx.moveTo(0, -15);
+      ctx.lineTo(10, 11);
+      ctx.lineTo(0, 5);
+      ctx.lineTo(-10, 11);
       ctx.closePath();
-      ctx.fillStyle = cone;
+      ctx.fillStyle = cAccent;
       ctx.fill();
-
-      // Bordo luminoso del triangolo
-      ctx.beginPath();
-      ctx.moveTo(baseR, 0);
-      ctx.lineTo(tipR*Math.cos(fov), -tipR*Math.sin(fov));
-      ctx.moveTo(baseR, 0);
-      ctx.lineTo(tipR*Math.cos(fov), tipR*Math.sin(fov));
-      ctx.strokeStyle = 'rgba(190,255,198,0.70)';
-      ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
+      ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+      ctx.lineWidth = 1.6;
+      ctx.lineJoin = 'round';
       ctx.stroke();
-
-      // Punta direzionale
-      ctx.beginPath();
-      ctx.moveTo(tipR+5, 0);
-      ctx.lineTo(tipR-5, -5);
-      ctx.lineTo(tipR-5, 5);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(210,255,216,0.95)';
-      ctx.fill();
-
       ctx.restore();
     } else {
-      // Prima della calibrazione: marker neutro ma riconoscibile
-      ctx.beginPath();
-      ctx.arc(CX,CY,15+bpulse*3,0,Math.PI*2);
-      ctx.fillStyle = `rgba(88,209,106,${0.18+bpulse*0.12})`;
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(CX,CY,9,0,Math.PI*2);
+      ctx.fillStyle = cAccent; ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2; ctx.stroke();
     }
-
-    // Punto centrale sempre presente
-    ctx.beginPath(); ctx.arc(CX,CY,8,0,Math.PI*2);
-    ctx.fillStyle = cAccent; ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,0.82)'; ctx.lineWidth=2.5; ctx.stroke();
-
-    // Piccolo highlight per un effetto più "premium"
-    ctx.beginPath(); ctx.arc(CX-2.5,CY-2.5,2.2,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.65)'; ctx.fill();
 
     requestAnimationFrame(render);
   }
@@ -618,6 +551,12 @@
   loadStart();
   requestAnimationFrame(render);
   if (start){ requestOrientationPermission(); startWatch(); showHomeUI(true); }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(()=>{});
+    });
+  }
 })();
 </script>
 </body>
