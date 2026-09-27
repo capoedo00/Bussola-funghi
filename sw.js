@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bussola-ritorno-v1';
+const CACHE_NAME = 'bussola-ritorno-v2';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
@@ -16,17 +16,16 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Network-first: se c'è connessione prende sempre la versione più recente
+// (e la aggiorna in cache); se sei offline, usa l'ultima versione salvata.
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match('./index.html'));
-    })
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
   );
 });
