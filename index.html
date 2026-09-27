@@ -308,6 +308,15 @@
     const scale = (W/2-28)/dispMaxDist;
     const off = p => localOffset(current, p);
 
+    if (deviceHeading !== null) dispHeading = lerpAngle(dispHeading, deviceHeading, 0.15);
+    const headingUp = deviceHeading !== null;
+    const rotAngle = headingUp ? -toRad(dispHeading) : 0;
+
+    ctx.save();
+    ctx.translate(CX, CY);
+    ctx.rotate(rotAngle);
+    ctx.translate(-CX, -CY);
+
     drawTrees(scale, dispMaxDist);
 
     // range rings (dashed)
@@ -319,7 +328,7 @@
     }
     ctx.setLineDash([]);
 
-    // compass ticks
+    // compass ticks (rotate with the map; letters counter-rotated so they stay upright)
     for (let a=0; a<360; a+=30){
       const rad = toRad(a-90);
       const r1 = W/2-6, r2 = a%90===0 ? W/2-16 : W/2-11;
@@ -330,10 +339,20 @@
       ctx.lineWidth = a%90===0 ? 2 : 1;
       ctx.stroke();
     }
-    ctx.textAlign='center'; ctx.font='bold 16px sans-serif';
-    ctx.fillStyle = cAccent2; ctx.fillText('N', CX, 26);
-    ctx.font='13px sans-serif'; ctx.fillStyle = cTextDim;
-    ctx.fillText('S', CX, H-14); ctx.fillText('E', W-18, CY+5); ctx.fillText('O', 18, CY+5);
+    function cardLabel(letter, angleDeg, color, font){
+      const rad = toRad(angleDeg-90), r = W/2-24;
+      const lx = CX+Math.cos(rad)*r, ly = CY+Math.sin(rad)*r;
+      ctx.save();
+      ctx.translate(lx, ly);
+      ctx.rotate(-rotAngle); // keep letters upright regardless of map rotation
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=font; ctx.fillStyle=color;
+      ctx.fillText(letter, 0, 0);
+      ctx.restore();
+    }
+    cardLabel('N', 0, cAccent2, 'bold 16px sans-serif');
+    cardLabel('S', 180, cTextDim, '13px sans-serif');
+    cardLabel('E', 90, cTextDim, '13px sans-serif');
+    cardLabel('O', 270, cTextDim, '13px sans-serif');
 
     // trail with fading gradient
     if (trail.length > 1){
@@ -366,7 +385,11 @@
       ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2);
       ctx.fillStyle = cAccent2; ctx.fill();
       ctx.strokeStyle='#0a140d'; ctx.lineWidth=2; ctx.stroke();
-      if (onEdge){ ctx.font='12px sans-serif'; ctx.fillStyle=cAccent2; ctx.fillText('▲', x, y-16); }
+      if (onEdge){
+        ctx.save(); ctx.translate(x,y-16); ctx.rotate(-rotAngle);
+        ctx.font='12px sans-serif'; ctx.fillStyle=cAccent2; ctx.textAlign='center';
+        ctx.fillText('▲', 0, 0); ctx.restore();
+      }
 
       if (d < 15 && !arrived){
         arrived = true; spawnParticles();
@@ -375,9 +398,11 @@
       if (d >= 15) arrived = false;
     }
 
+    ctx.restore();
+
     updateParticles();
 
-    // accuracy ring
+    // accuracy ring (radially symmetric, no rotation needed)
     if (accuracy){
       const r = Math.min(accuracy*scale, W/2-20);
       ctx.beginPath(); ctx.arc(CX,CY,Math.max(r,14),0,Math.PI*2);
@@ -385,21 +410,18 @@
       ctx.stroke(); ctx.setLineDash([]);
     }
 
-    // player marker: directional arrow showing which way the phone is facing
+    // player marker: fixed at center. In heading-up mode it always points straight up
+    // (the map rotates around it instead); otherwise it's a plain dot.
     const bpulse = 0.5+0.5*Math.sin(Date.now()/500);
     ctx.beginPath(); ctx.arc(CX,CY,16+bpulse*3,0,Math.PI*2);
     ctx.fillStyle = `rgba(88,209,106,${0.18+bpulse*0.12})`; ctx.fill();
 
-    if (deviceHeading !== null){
-      dispHeading = lerpAngle(dispHeading, deviceHeading, 0.15);
-      ctx.save();
-      ctx.translate(CX, CY);
-      ctx.rotate(toRad(dispHeading));
+    if (headingUp){
       ctx.beginPath();
-      ctx.moveTo(0, -15);
-      ctx.lineTo(10, 11);
-      ctx.lineTo(0, 5);
-      ctx.lineTo(-10, 11);
+      ctx.moveTo(CX, CY-15);
+      ctx.lineTo(CX+10, CY+11);
+      ctx.lineTo(CX, CY+5);
+      ctx.lineTo(CX-10, CY+11);
       ctx.closePath();
       ctx.fillStyle = cAccent;
       ctx.fill();
@@ -407,7 +429,6 @@
       ctx.lineWidth = 1.6;
       ctx.lineJoin = 'round';
       ctx.stroke();
-      ctx.restore();
     } else {
       ctx.beginPath(); ctx.arc(CX,CY,9,0,Math.PI*2);
       ctx.fillStyle = cAccent; ctx.fill();
